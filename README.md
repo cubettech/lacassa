@@ -239,7 +239,7 @@ Inserting, updating and deleting records works just like the original QB.
 
     DB::table('emp')->insert(['emp_id' => 11, 'emp_city' => '{"kochi", "tvm", "kollam"}', 'emp_name' => 'Christy', 'emp_phone' => 12345676890, 'emp_sal' => 500]);
 
-**Updating **
+**Updating**
 
 To update a model, you may retrieve it, change an attribute, and use the update method.
 
