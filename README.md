@@ -32,20 +32,18 @@ And add the service provider in config/app.php:
 
 Change your default database connection name in config/database.php:
 
-'default' => env('DB_CONNECTION', 'cassandra'),
+    'default' => env('DB_CONNECTION', 'cassandra'),
 
 And add a new cassandra connection:
 
- 'cassandra' => [
-	 	'driver' => 'Cassandra',
-		'host' => env('DB_HOST', 'localhost'),
-
-'port' => env('DB_PORT', 7199),
-
-'keyspace' => env('DB_DATABASE', 'cassandra_db'),
-	'username' => env('DB_USERNAME', ''),
-	'password' => env('DB_PASSWORD', ''),
- ],
+    'cassandra' => [
+    	 	'driver' => 'Cassandra',
+    		'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', 7199),
+            'keyspace' => env('DB_DATABASE', 'cassandra_db'),
+        	'username' => env('DB_USERNAME', ''),
+        	'password' => env('DB_PASSWORD', ''),
+     ],
 
 ### **Auth**
 
