@@ -125,7 +125,10 @@ class Grammar extends BaseGrammar
         // intended records are updated by the SQL statements we generate to run.
         $wheres = $this->compileWheres($query);
         $upateCollections = $this->compileUpdateCollections($query);
-        $upateCollections = $columns ? ', '.$upateCollections : $upateCollections;
+        if($upateCollections)
+        {
+          $upateCollections = $columns ? ', '.$upateCollections : $upateCollections;
+        }
         //for cassandra we have colletions type. and colletions are updated using
         //updateCollection method.
         //here we will add the udpate colletion query to the mail query.
