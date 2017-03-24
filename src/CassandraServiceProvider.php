@@ -27,7 +27,7 @@ class CassandraServiceProvider extends ServiceProvider
     {
         // Add database driver.
         $this->app->resolving('db', function ($db) {
-            $db->extend('cassandra', function ($config, $name) {
+            $db->extend('Cassandra', function ($config, $name) {
                 $config['name'] = $name;
                 return new Connection($config);
             });

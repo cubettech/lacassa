@@ -206,8 +206,12 @@ class Grammar extends BaseGrammar
 
         }
         return $collection;
-
-
+    }
+    public function compileIndex($query, $columns)
+    {
+      $table = $this->wrapTable($query->from);
+      $value = implode(", ",$columns);
+      return "CREATE INDEX IF NOT EXISTS ON ". $table ."(".  $value .")";
     }
 
 }

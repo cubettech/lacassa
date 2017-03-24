@@ -411,6 +411,13 @@ class Builder extends BaseBuilder
         return $this;
       }
 
+      public function index($columns = [])
+      {
+        $cql = $this->grammar->compileIndex($this, $columns);
+        $result = $this->executeCql($cql);
+        return $result;
+      }
+
 
 
 
