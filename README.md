@@ -22,11 +22,11 @@ Make sure you have the DataStax PHP Driver for Apache Cassandra installed. You c
 
 Installation using composer:
 
-    **composer require cubettech/lacassa**
+    composer require cubettech/lacassa
 
 And add the service provider in config/app.php:
 
-    **Cubettech\Lacassa\CassandraServiceProvider::class,**
+    Cubettech\Lacassa\CassandraServiceProvider::class,
 
 ## **Configuration**
 
