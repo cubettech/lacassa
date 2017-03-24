@@ -1,0 +1,14 @@
+# Directories to ignore
+/.idea/
+/.vagrant/
+/bin/
+/build/
+/docs/
+/vendor/
+/venv/
+
+
+# Files to ignore
+/cassandra.log
+/composer.phar
+/tmp/*
