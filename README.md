@@ -1,5 +1,6 @@
 ## **Lacassa**
 
+
 A Query builder with support for Cassandra, using the original Laravel API. This library extends the original Laravel classes, so it uses exactly the same methods.
 
 ## **Table of contents**
