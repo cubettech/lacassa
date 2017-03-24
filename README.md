@@ -1,4 +1,4 @@
-**Laravel Cassandra**
+##**Laravel Cassandra**
 
 A Query builder with support for Cassandra, using the original Laravel API. This library extends the original Laravel classes, so it uses exactly the same methods.
 
@@ -22,11 +22,11 @@ Make sure you have the DataStax PHP Driver for Apache Cassandra installed. You c
 
 Installation using composer:
 
-**composer require cubettech/lacassa**
+    **composer require cubettech/lacassa**
 
 And add the service provider in config/app.php:
 
-**Cubettech****\Lacassa\CassandraServiceProvider::class,**
+    **Cubettech\Lacassa\CassandraServiceProvider::class,**
 
 ## **Configuration**
 
@@ -47,26 +47,17 @@ And add a new cassandra connection:
 
 ### **Auth**
 
-You can use Laravelâ€™s native Auth functionality for cassandra, make sure your config/auth.php looks like 
+You can use Laravel's native Auth functionality for cassandra, make sure your config/auth.php looks like 
 
         'providers' => [
-
         // 'users' => [
-
         //     'driver' => 'eloquent',
-
         //     'model' => App\User::class,
-
         // ],
-
         'users' => [
-
             'driver' => 'database',
-
             'table' => 'users',
-
         ],
-
             ],
 
 ## **Schema**
@@ -74,27 +65,16 @@ You can use Laravelâ€™s native Auth functionality for cassandra, make sure 
 The database driver also has (limited) schema builder support. You can easily manipulate tables and set indexes:
 
         Schema::create(
-
             'users', function ($table) {
-
                 $table->int('id');
-
 	            $table->text('name');
-
 	            $table->text('email');
-
 	            $table->text('password');
-
                 $table->text('remember_token');
-
 	            $table->setCollection('phn', 'bigint');
-
                 $table->listCollection('hobbies', 'text');
-
                 $table->mapCollection('friends', 'text', 'text');
-
                 $table->primary(['id']);
-
           });
 
 DROP table
@@ -147,7 +127,7 @@ ascii('u')
 
 **Primary Key**
 
-primary(['a', â€˜bâ€™])
+primary(['a', 'b'])
 
 **Query Builder**
 
@@ -183,7 +163,7 @@ CREATE INDEX creates a new index on the given table for the named column.
 
 **Wheres**
 
-The WHERE clause specifies which rows to query. In the WHERE clause, refer to a column using the actual name, not an alias. Columns in the WHERE clause need to meet one* *of these requirements:
+The WHERE clause specifies which rows to query. In the WHERE clause, refer to a column using the actual name, not an alias. Columns in the WHERE clause need to meet one of these requirements:
 
 * The partition key definition includes the column.	
 
@@ -201,7 +181,7 @@ The WHERE clause specifies which rows to query. In the WHERE clause, refer to a 
 
 **Order By**
 
-ORDER BY clauses can select a single column only.** **Ordering can be done in ascending or descending order, default ascending, and specified with the ASC or DESC keywords.** **In the ORDER BY clause, refer to a column using the actual name, not the aliases.
+ORDER BY clauses can select a single column only. Ordering can be done in ascending or descending order, default ascending, and specified with the ASC or DESC keywords. In the ORDER BY clause, refer to a column using the actual name, not the aliases.
 
     $emp = DB::table('emp')->where('emp_name','Christy')->orderBy('emp_no', 'desc')->get();
 
@@ -291,7 +271,7 @@ Value can be associative array for map type and array of string/number for list 
 
     DB::table('users')->where('id', 1)->updateCollection('map', 'friends', '-', ['John'])->update();
 
-**Deleting **
+**Deleting**
 
 To delete a model, simply call the delete method on the instance. We can delete the rows in a table by using deleteRow method:
 
