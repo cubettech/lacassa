@@ -370,15 +370,15 @@ class Builder extends BaseBuilder
           }
 
 
-          $insertCollections = collect($this->bindings['insertCollection']);
-  				$insertCollectionArray = $insertCollections->map(function($collectionItem){
-  					return [$collectionItem['column'] => $this->grammar->compileCollectionValues($collectionItem['type'], $collectionItem['value'])];
-  				})->all();
-
-          if(!empty($insertCollectionArray))
-          {
-  				      $values = array_merge(reset($values), reset($insertCollectionArray));
-          }
+          // $insertCollections = collect($this->bindings['insertCollection']);
+  				// $insertCollectionArray = $insertCollections->map(function($collectionItem){
+  				// 	return [$collectionItem['column'] => $this->grammar->compileCollectionValues($collectionItem['type'], $collectionItem['value'])];
+  				// })->all();
+          //
+          // if(!empty($insertCollectionArray))
+          // {
+  				//       $values = array_merge(reset($values), reset($insertCollectionArray));
+          // }
 
   				if (! is_array(reset($values))) {
               $values = [$values];

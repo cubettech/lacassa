@@ -46,26 +46,44 @@ class Grammar extends BaseGrammar
         if (! is_array(reset($values))) {
             $values = [$values];
         }
-				// $insertCollections = collect($query->bindings['insertCollection']);
-				//
-				// $insertCollectionArray = $insertCollections->map(function($collectionItem){
-				// 	return [$collectionItem['column'] => $this->compileCollectionValues($collectionItem['type'], $collectionItem['value'])];
-				// })->all();
+				$insertCollections = collect($query->bindings['insertCollection']);
+
+				$insertCollectionArray = $insertCollections->mapWithKeys(function($collectionItem){
+					//$insertCollectionArray[$collectionItem['column']] = $this->compileCollectionValues($collectionItem['type'], $collectionItem['value']);
+          //return $insertCollectionArray;
+          return [$collectionItem['column'] => $this->compileCollectionValues($collectionItem['type'], $collectionItem['value'])];
+				})->all();
+
 				// $values = array_merge(reset($values), reset($insertCollectionArray));
 				// if (! is_array(reset($values))) {
         //     $values = [$values];
         // }
-        $columns = $this->columnize(array_keys(reset($values)));
 
+        $columns = $this->columnize(array_keys(reset($values)));
+        $collectionColumns = $this->columnize(array_keys($insertCollectionArray));
+        if($collectionColumns){
+          $columns = $columns ? $columns .', '. $collectionColumns:$collectionColumns;
+        }
+        $collectionParam = $this->buildInsertCollectionParam($insertCollections);
         // We need to build a list of parameter place-holders of values that are bound
         // to the query. Each insert should have the exact same amount of parameter
         // bindings so we will loop through the record and parameterize them all.
         $parameters = collect($values)->map(
             function ($record) {
-                return '('.$this->parameterize($record).')';
+                return $this->parameterize($record);
             }
         )->implode(', ');
-        return "insert into $table ($columns) values $parameters";
+        if($collectionParam){
+          $parameters = $parameters ? $parameters .', '. $collectionParam : $collectionParam;
+        }
+
+        return "insert into $table ($columns) values ($parameters)";
+    }
+
+    public function buildInsertCollectionParam($collection){
+      return $collection->map(function($collectionItem){
+        return $this->compileCollectionValues($collectionItem['type'], $collectionItem['value']);
+      })->implode(', ');
     }
 
     /**
@@ -188,7 +206,7 @@ class Grammar extends BaseGrammar
             if('set' == $type || 'list' == $type) {
                 $collection = collect($value)->map(
                     function ($item, $key) {
-                        return is_numeric($item) ? $item : "'".$item."'";
+                        return 'string' == strtolower(gettype($item)) ? "'" . $item . "'" : $item;
                     }
                 )->implode(', ');
             }
@@ -196,8 +214,8 @@ class Grammar extends BaseGrammar
                 $collection = collect($value)->map(
                     function ($item, $key) use ($isAssociative){
                         if($isAssociative === true) {
-                            $key = is_numeric($key) ? $key : "'".$key."'";
-                            $item = is_numeric($item) ? $item : "'".$item."'";
+                            $key = 'string' == strtolower(gettype($key)) ? "'" . $key . "'" : $key;
+                            $item = 'string' == strtolower(gettype($item)) ? "'" . $item . "'" : $item;
                             return   $key . ':'. $item;
                         }else{
                             return is_numeric($item) ? $item : "'".$item."'";

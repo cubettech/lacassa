@@ -149,8 +149,8 @@ class Connection extends BaseConnection
             $value = 'string' == strtolower(gettype($binding)) ? "'" . $binding . "'" : $binding;
             $query = preg_replace('/\?/', $value, $query, 1);
           }
-            $builder = new Query\Builder($this, $this->getPostProcessor());
-            return $builder->executeCql($query);
+          $builder = new Query\Builder($this, $this->getPostProcessor());
+          return $builder->executeCql($query);
     }
     /**
      * Run an SQL statement and get the number of rows affected.
