@@ -280,11 +280,11 @@ class Builder extends BaseBuilder
 
     /**
      * [updateCollection used to update the colletions like set, list and map]
-     * @param  [type] $type      [description]
-     * @param  [type] $column    [description]
-     * @param  [type] $operation [description]
-     * @param  [type] $value     [description]
-     * @return [type]            [description]
+     * @param  [string] $type      [description]
+     * @param  [string] $column    [description]
+     * @param  [string] $operation [description]
+     * @param  [string] $value     [description]
+     * @return [string]            [description]
      */
     public function updateCollection($type, $column, $operation = null, $value = null)
     {
@@ -332,9 +332,9 @@ class Builder extends BaseBuilder
      */
         public function update(array $values = [])
         {
-            $sql = $this->grammar->compileUpdate($this, $values);
+            $cql = $this->grammar->compileUpdate($this, $values);
             return $this->connection->update(
-                $sql, $this->cleanBindings(
+                $cql, $this->cleanBindings(
                     $this->grammar->prepareBindingsForUpdate($this->bindings, $values)
                 )
             );
@@ -409,8 +409,4 @@ class Builder extends BaseBuilder
         $result = $this->executeCql($cql);
         return $result;
       }
-
-
-
-
 }

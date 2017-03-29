@@ -139,7 +139,7 @@ class Connection extends BaseConnection
     }
 
     /**
-     * Execute an SQL statement and return the boolean result.
+     * Execute an CQL statement and return the boolean result.
      *
      * @param  string $query
      * @param  array  $bindings
@@ -157,7 +157,7 @@ class Connection extends BaseConnection
     }
 
     /**
-     * Run an SQL statement and get the number of rows affected.
+     * Run an CQL statement and get the number of rows affected.
      *
      * @param  string $query
      * @param  array  $bindings
@@ -179,7 +179,7 @@ class Connection extends BaseConnection
     }
 
     /**
-     * Execute an SQL statement and return the boolean result.
+     * Execute an CQL statement and return the boolean result.
      *
      * @param  string $query
      * @param  array  $bindings
