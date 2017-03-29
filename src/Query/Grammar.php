@@ -5,6 +5,11 @@ use Illuminate\Database\Query\Builder as BaseBuilder;
 
 class Grammar extends BaseGrammar
 {
+    /**
+     * [compileSelect compiles the cql select]
+     * @param  BaseBuilder $query [description]
+     * @return [type]             [description]
+     */
     public function compileSelect(BaseBuilder $query)
     {
 
@@ -31,12 +36,12 @@ class Grammar extends BaseGrammar
     }
 
     /**
-        * Compile an insert statement into CQL.
-        *
-        * @param  Cubettech\Lacassa\Query $query
-        * @param  array               $values
-        * @return string
-        */
+      * Compile an insert statement into CQL.
+      *
+      * @param  Cubettech\Lacassa\Query $query
+      * @param  array               $values
+      * @return string
+      */
     public function compileInsert(BaseBuilder $query, array $values)
     {
         // Essentially we will force every insert to be treated as a batch insert which
@@ -49,15 +54,8 @@ class Grammar extends BaseGrammar
 				$insertCollections = collect($query->bindings['insertCollection']);
 
 				$insertCollectionArray = $insertCollections->mapWithKeys(function($collectionItem){
-					//$insertCollectionArray[$collectionItem['column']] = $this->compileCollectionValues($collectionItem['type'], $collectionItem['value']);
-          //return $insertCollectionArray;
-          return [$collectionItem['column'] => $this->compileCollectionValues($collectionItem['type'], $collectionItem['value'])];
+        return [$collectionItem['column'] => $this->compileCollectionValues($collectionItem['type'], $collectionItem['value'])];
 				})->all();
-
-				// $values = array_merge(reset($values), reset($insertCollectionArray));
-				// if (! is_array(reset($values))) {
-        //     $values = [$values];
-        // }
 
         $columns = $this->columnize(array_keys(reset($values)));
         $collectionColumns = $this->columnize(array_keys($insertCollectionArray));
@@ -80,6 +78,11 @@ class Grammar extends BaseGrammar
         return "insert into $table ($columns) values ($parameters)";
     }
 
+    /**
+     * [buildInsertCollectionParam description]
+     * @param  [type] $collection [description]
+     * @return [type]             [description]
+     */
     public function buildInsertCollectionParam($collection){
       return $collection->map(function($collectionItem){
         return $this->compileCollectionValues($collectionItem['type'], $collectionItem['value']);
@@ -92,7 +95,6 @@ class Grammar extends BaseGrammar
      * @param  string $value
      * @return string
      */
-
     protected function wrapValue($value)
     {
         if ($value !== '*') {
@@ -120,12 +122,12 @@ class Grammar extends BaseGrammar
     }
 
     /**
-         * Compile an update statement into SQL.
-         *
-         * @param  \Illuminate\Database\Query\Builder $query
-         * @param  array                              $values
-         * @return string
-         */
+     * Compile an update statement into SQL.
+     *
+     * @param  \Illuminate\Database\Query\Builder $query
+     * @param  array                              $values
+     * @return string
+     */
     public function compileUpdate(BaseBuilder $query, $values)
     {
         $table = $this->wrapTable($query->from);
@@ -147,14 +149,15 @@ class Grammar extends BaseGrammar
         {
           $upateCollections = $columns ? ', '.$upateCollections : $upateCollections;
         }
-        //for cassandra we have colletions type. and colletions are updated using
-        //updateCollection method.
-        //here we will add the udpate colletion query to the mail query.
-        //$this->compileUpdateCollections($query);
 
         return trim("update {$table} set $columns $upateCollections $wheres");
     }
 
+    /**
+     * [compileUpdateCollections compiles the udpate collection methods]
+     * @param  BaseBuilder $query [description]
+     * @return [type]             [description]
+     */
     public function compileUpdateCollections(BaseBuilder $query)
     {
         $updateCollections = collect($query->bindings['updateCollection']);
@@ -172,11 +175,12 @@ class Grammar extends BaseGrammar
 
     }
 
-		public function compileInsertCollections(BaseBuilder $query)
-		{
-
-		}
-
+    /**
+     * [compileCollectionValues compiles the values assigned to collections]
+     * @param  [type] $type  [description]
+     * @param  [type] $value [description]
+     * @return [type]        [description]
+     */
     public function compileCollectionValues($type, $value)
     {
         if(is_array($value)) {
@@ -196,6 +200,12 @@ class Grammar extends BaseGrammar
 
     }
 
+    /**
+     * [buildCollectionString builds the insert string]
+     * @param  [type] $type  [description]
+     * @param  [type] $value [description]
+     * @return [type]        [description]
+     */
     public function buildCollectionString($type, $value)
     {
         $isAssociative = false;
@@ -228,6 +238,13 @@ class Grammar extends BaseGrammar
         }
         return $collection;
     }
+
+    /**
+     * [compileIndex description]
+     * @param  [type] $query   [description]
+     * @param  [type] $columns [description]
+     * @return [type]          [description]
+     */
     public function compileIndex($query, $columns)
     {
       $table = $this->wrapTable($query->from);

@@ -15,7 +15,6 @@ class CassandraServiceProvider extends ServiceProvider
     public function boot()
     {
         require __DIR__ . '/../vendor/autoload.php';
-        //
     }
 
     /**
@@ -32,12 +31,5 @@ class CassandraServiceProvider extends ServiceProvider
                 return new Connection($config);
             });
         });
-
-        // Add connector for queue support.
-        // $this->app->resolving('queue', function ($queue) {
-        //     $queue->addConnector('mongodb', function () {
-        //         return new MongoConnector($this->app['db']);
-        //     });
-        // });
     }
 }

@@ -57,7 +57,10 @@ class Connection extends BaseConnection
     {
         return new Schema\Builder($this);
     }
-
+    /**
+     * [getSchemaGrammar returns the connection grammer]
+     * @return [Schema\Grammar] [description]
+     */
     public function getSchemaGrammar()
     {
         return new Schema\Grammar;
@@ -152,6 +155,7 @@ class Connection extends BaseConnection
           $builder = new Query\Builder($this, $this->getPostProcessor());
           return $builder->executeCql($query);
     }
+
     /**
      * Run an SQL statement and get the number of rows affected.
      *
@@ -174,7 +178,7 @@ class Connection extends BaseConnection
             return $builder->executeCql($query);
     }
 
-        /**
+    /**
      * Execute an SQL statement and return the boolean result.
      *
      * @param  string $query
