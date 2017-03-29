@@ -25,5 +25,6 @@
             "email": "renny.roy@cubettech.com"
         }
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
