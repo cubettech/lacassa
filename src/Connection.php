@@ -57,7 +57,10 @@ class Connection extends BaseConnection
     {
         return new Schema\Builder($this);
     }
-
+    /**
+     * [getSchemaGrammar returns the connection grammer]
+     * @return [Schema\Grammar] [description]
+     */
     public function getSchemaGrammar()
     {
         return new Schema\Grammar;
@@ -144,15 +147,15 @@ class Connection extends BaseConnection
      */
     public function statement($query, $bindings = [])
     {
-        //dd($query);
         foreach($bindings as $binding)
-            {
-            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+          {
+            $value = 'string' == strtolower(gettype($binding)) ? "'" . $binding . "'" : $binding;
             $query = preg_replace('/\?/', $value, $query, 1);
-        }
-            $builder = new Query\Builder($this, $this->getPostProcessor());
-            return $builder->executeCql($query);
+          }
+          $builder = new Query\Builder($this, $this->getPostProcessor());
+          return $builder->executeCql($query);
     }
+
     /**
      * Run an SQL statement and get the number of rows affected.
      *
@@ -167,7 +170,7 @@ class Connection extends BaseConnection
             // to execute the statement and then we'll use PDO to fetch the affected.
         foreach($bindings as $binding)
             {
-            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+            $value = $value = 'string' == strtolower(gettype($binding)) ? "'" . $binding . "'" : $binding;
             $query = preg_replace('/\?/', $value, $query, 1);
         }
             $builder = new Query\Builder($this, $this->getPostProcessor());
@@ -175,7 +178,7 @@ class Connection extends BaseConnection
             return $builder->executeCql($query);
     }
 
-        /**
+    /**
      * Execute an SQL statement and return the boolean result.
      *
      * @param  string $query

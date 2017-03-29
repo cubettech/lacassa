@@ -170,28 +170,12 @@ class Builder extends BaseBuilder
         //$this->useCollections = $this->shouldUseCollections();
     }
 
-    //REMOVETHIS
-    // /**
-    //  * Returns true if Laravel or Lumen >= 5.3
-    //  *
-    //  * @return bool
-    //  */
-    // protected function shouldUseCollections()
-    // {
-    //     if (function_exists('app')) {
-    //         $version = app()->version();
-    //         $version = filter_var(explode(')', $version)[0], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION); // lumen
-    //         return version_compare($version, '5.3', '>=');
-    //     }
-    // }
-
     /**
      * Set the table which the query is targeting.
      *
      * @param  string $table
      * @return $this
      */
-
     public function from($collection)
     {
         return parent::from($collection);
@@ -203,7 +187,6 @@ class Builder extends BaseBuilder
      * @param  array $columns
      * @return Cassandra\Rows
      */
-
     public function get($columns = ['*'])
     {
         if(is_null($this->columns)) {
@@ -238,7 +221,7 @@ class Builder extends BaseBuilder
      * @return Cassandra\Rows
      */
     public function executeCql($cql)
-    {
+    {   //dd($cql);
         $statement = new Cassandra\SimpleStatement($cql);
         $future    = $this->connection->getCassandraConnection()->executeAsync($statement);
         $result    = $future->get();
@@ -295,6 +278,14 @@ class Builder extends BaseBuilder
         return (int) $result->count();
     }
 
+    /**
+     * [updateCollection used to update the colletions like set, list and map]
+     * @param  [type] $type      [description]
+     * @param  [type] $column    [description]
+     * @param  [type] $operation [description]
+     * @param  [type] $value     [description]
+     * @return [type]            [description]
+     */
     public function updateCollection($type, $column, $operation = null, $value = null)
     {
         //Check if the type is anyone in SET, LIST or MAP. else throw ERROR.
@@ -312,9 +303,9 @@ class Builder extends BaseBuilder
         $updateCollection = compact('type', 'column', 'value', 'operation');
         $this->updateCollections[] = $updateCollection;
         $this->addCollectionBinding($updateCollection, 'updateCollection');
-
         return $this;
     }
+
     /**
      * Add a binding to the query.
      *
@@ -369,17 +360,6 @@ class Builder extends BaseBuilder
               $values = [$values];
           }
 
-
-          $insertCollections = collect($this->bindings['insertCollection']);
-  				$insertCollectionArray = $insertCollections->map(function($collectionItem){
-  					return [$collectionItem['column'] => $this->grammar->compileCollectionValues($collectionItem['type'], $collectionItem['value'])];
-  				})->all();
-
-          if(!empty($insertCollectionArray))
-          {
-  				      $values = array_merge(reset($values), reset($insertCollectionArray));
-          }
-
   				if (! is_array(reset($values))) {
               $values = [$values];
           }
@@ -403,12 +383,31 @@ class Builder extends BaseBuilder
           );
       }
 
+      /**
+       * [insertCollection insert a colletion type in cassandra]
+       * @param  [type] $type   [description]
+       * @param  [type] $column [description]
+       * @param  [type] $value  [description]
+       * @return [type]         [description]
+       */
       public function insertCollection($type, $column, $value)
       {
         $insertCollection = compact('type', 'column', 'value');
         $this->insertCollections[] = $insertCollection;
         $this->addCollectionBinding($insertCollection, 'insertCollection');
         return $this;
+      }
+
+      /**
+       * [index description]
+       * @param  [type] $columns [description]
+       * @return [type]          [description]
+       */
+      public function index($columns = [])
+      {
+        $cql = $this->grammar->compileIndex($this, $columns);
+        $result = $this->executeCql($cql);
+        return $result;
       }
 
 
