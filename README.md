@@ -20,6 +20,10 @@ A Query builder with support for Cassandra, using the original Laravel API. This
 ## **Installation**
 
 Make sure you have the DataStax PHP Driver for Apache Cassandra installed. You can find installation instructions at https://github.com/datastax/php-driver
+or 
+https://github.com/datastax/php-driver/blob/master/ext/README.md
+
+*datastax php-driver requires php version 5.6+*
 
 Installation using composer:
 
