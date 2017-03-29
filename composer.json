@@ -27,7 +27,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Cubettech\\Lacassa\\":"vendor/cubettech/lacassa/src"
+            "Cubettech\\Lacassa\\":"src/"
             }
         },
     "minimum-stability": "dev",
