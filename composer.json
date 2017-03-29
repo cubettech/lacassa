@@ -25,6 +25,11 @@
             "email": "renny.roy@cubettech.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Cubettech\\Lacassa\\":"vendor/cubettech/lacassa/src"
+            }
+        },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
