@@ -2,6 +2,7 @@
     "name": "cubettech/lacassa",
     "type": "library",
     "description": "Cassandra based query builder for laravel.",
+    "license": "MIT",
     "keywords": [
         "cassandra",
         "nosql",
