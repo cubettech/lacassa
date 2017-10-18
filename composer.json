@@ -1,5 +1,5 @@
 {
-    "name": "seta0909/lacassa",
+    "name": "cnyesrd/lacassa",
     "type": "library",
     "description": "Cassandra based query builder for laravel.",
     "license": "MIT",
