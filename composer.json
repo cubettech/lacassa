@@ -1,5 +1,5 @@
 {
-    "name": "cubettech/lacassa",
+    "name": "seta0909/lacassa",
     "type": "library",
     "description": "Cassandra based query builder for laravel.",
     "license": "MIT",
