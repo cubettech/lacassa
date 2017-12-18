@@ -229,8 +229,6 @@ class Builder extends BaseBuilder
         $future = $this->connection->getCassandraConnection()->executeAsync($statement);
         $result = $future->get();
 
-        foreach($result as $value)
-
         return collect($result);
     }
 
