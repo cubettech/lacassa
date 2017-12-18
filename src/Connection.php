@@ -3,7 +3,6 @@ namespace Cubettech\Lacassa;
 
 use Illuminate\Database\Connection as BaseConnection;
 use Cassandra;
-use Cassandra\TimestampGenerator;
 
 class Connection extends BaseConnection
 {
@@ -88,7 +87,6 @@ class Connection extends BaseConnection
         $cluster   = Cassandra::cluster()
                               ->withContactPoints($config['host'])
                               ->withPort((int)$config['port'])
-            ->withTimestampGenerator(new TimestampGenerator\Monotonic())
                               ->build();
         $keyspace  = $config['keyspace'];
         $connection   = $cluster->connect($keyspace);
