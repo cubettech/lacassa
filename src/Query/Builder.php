@@ -221,7 +221,7 @@ class Builder extends BaseBuilder
      *
      * @param  object $cql
      *
-     * @return Cassandra\Rows
+     * @return Collection
      */
     public function executeCql($cql)
     {
