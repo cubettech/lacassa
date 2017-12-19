@@ -30,9 +30,38 @@ class Grammar extends BaseGrammar
                 $this->compileComponents($query)
             )
         );
+
         $query->columns = $original;
 
         return $cql;
+    }
+
+    /**
+     * Compile the components necessary for a select clause.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return array
+     */
+    protected function compileComponents(BaseBuilder $query)
+    {
+        $sql = [];
+        foreach ($query->wheres as $key => $where) {
+            if ($where['type'] === 'Nested') {
+                $query->wheres = $where['query']->wheres;
+            }
+        }
+        foreach ($this->selectComponents as $component) {
+            // To compile the query, we'll spin through each component of the query and
+            // see if that component exists. If it does we'll just call the compiler
+            // function for the component which is responsible for making the SQL.
+            if (! is_null($query->$component)) {
+                $method = 'compile'.ucfirst($component);
+
+                $sql[$component] = $this->$method($query, $query->$component);
+            }
+        }
+
+        return $sql;
     }
 
     /**

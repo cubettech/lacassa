@@ -192,6 +192,7 @@ class Builder extends BaseBuilder
         if (is_null($this->columns)) {
             $this->columns = $columns;
         }
+
         $cql = $this->toCql();
         $cql = $this->bindQuery($cql);
         $result = $this->executeCql($cql);
@@ -393,6 +394,7 @@ class Builder extends BaseBuilder
                 $values[$key] = $value;
             }
         }
+
         // Finally, we will run this query against the database connection and return
         // the results. We will need to also flatten these bindings before running
         // the query so they are all in one huge, flattened array for execution.
