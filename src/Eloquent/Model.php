@@ -70,7 +70,7 @@ abstract class Model extends BaseModel
     public function fromDateTime($value)
     {
         // If the value is already a UTCDateTime instance, we don't need to parse it.
-        if ($value instanceof UTCDateTime) {
+        if ($value instanceof Timestamp) {
             return $value;
         }
 
@@ -79,7 +79,7 @@ abstract class Model extends BaseModel
             $value = parent::asDateTime($value);
         }
 
-        return new UTCDateTime($value->getTimestamp() * 1000);
+        return new Timestamp($value->getTimestamp() * 1000);
     }
 
     /**
