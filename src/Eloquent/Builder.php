@@ -75,7 +75,7 @@ class Builder extends EloquentBuilder
             return $this->model->getKey();
         }
 
-        return parent::insertGetId($values, $sequence);
+        return parent::insert($values, $sequence);
     }
 
     /**
