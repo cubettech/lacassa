@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Cubettech\Lacassa\Eloquent;
 
@@ -79,7 +79,7 @@ abstract class Model extends BaseModel
             $value = parent::asDateTime($value);
         }
 
-        return new Timestamp($value->getTimestamp() * 1000);
+        return $value->timestamp;
     }
 
     /**
@@ -115,7 +115,7 @@ abstract class Model extends BaseModel
      */
     public function freshTimestamp()
     {
-        return new Timestamp(round(microtime(true) * 1000));
+        return Carbon::now()->timestamp;
     }
 
     /**
@@ -182,20 +182,24 @@ abstract class Model extends BaseModel
     public function setAttribute($key, $value)
     {
         // Convert _id to ObjectID.
-        if ($key == '_id' and is_string($value)) {
-            $builder = $this->newBaseQueryBuilder();
+        try{
+            if ($key == '_id' and is_string($value)) {
+                $builder = $this->newBaseQueryBuilder();
 
-            $value = $builder->convertKey($value);
-        } // Support keys in dot notation.
-        elseif (str_contains($key, '.')) {
-            if (in_array($key, $this->getDates()) && $value) {
-                $value = $this->fromDateTime($value);
+                $value = $builder->convertKey($value);
+            } elseif (str_contains($key, '.')) {
+                if (in_array($key, $this->getDates()) && $value) {
+                    $value = $this->fromDateTime($value);
+                }
+
+                array_set($this->attributes, $key, $value);
+
+                return;
             }
-
-            array_set($this->attributes, $key, $value);
-
-            return;
+        }catch (\Exception $e){
+            dd($value);
         }
+
 
         parent::setAttribute($key, $value);
     }
@@ -410,5 +414,29 @@ abstract class Model extends BaseModel
         }
 
         return parent::__call($method, $parameters);
+    }
+
+    /**
+     * Create the model in the database.
+     *
+     * @param  array  $attributes
+     * @param  array  $options
+     * @return Model
+     */
+    public static function create(array $attributes = [])
+    {
+        $model = new static($attributes);
+        $model->setIncrementing(false)->save();
+        return $model;
+    }
+
+    /**
+     * Get the parent relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function getParentRelation()
+    {
+        return $this->parentRelation;
     }
 }
