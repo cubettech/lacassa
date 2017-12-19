@@ -5,7 +5,6 @@ namespace Cubettech\Lacassa\Eloquent;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Cassandra\Driver\Cursor;
-use Cassandra\Model\BSONDocument;
 
 class Builder extends EloquentBuilder
 {
@@ -221,10 +220,6 @@ class Builder extends EloquentBuilder
         if ($results instanceof Cursor) {
             $results = iterator_to_array($results, false);
             return $this->model->hydrate($results);
-        } // Convert Cassandra BSONDocument to a single object.
-        elseif ($results instanceof BSONDocument) {
-            $results = $results->getArrayCopy();
-            return $this->model->newFromBuilder((array) $results);
         } // The result is a single object.
         elseif (is_array($results) and array_key_exists('_id', $results)) {
             return $this->model->newFromBuilder((array) $results);
