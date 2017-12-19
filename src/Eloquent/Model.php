@@ -7,8 +7,6 @@ use DateTime;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Cubettech\Lacassa\Query\Builder as QueryBuilder;
-use Cassandra\BSON\ObjectID;
-use Cassandra\BSON\UTCDateTime;
 use Cassandra\Timestamp;
 use ReflectionMethod;
 
@@ -48,11 +46,6 @@ abstract class Model extends BaseModel
         // This allows us to work with models in a more sql-like way.
         if (! $value and array_key_exists('_id', $this->attributes)) {
             $value = $this->attributes['_id'];
-        }
-
-        // Convert ObjectID to string.
-        if ($value instanceof ObjectID) {
-            return (string) $value;
         }
 
         return $value;
@@ -118,11 +111,11 @@ abstract class Model extends BaseModel
     /**
      * Get a fresh timestamp for the model.
      *
-     * @return UTCDateTime
+     * @return Timestamp
      */
     public function freshTimestamp()
     {
-        return new UTCDateTime(round(microtime(true) * 1000));
+        return new Timestamp(round(microtime(true) * 1000));
     }
 
     /**
@@ -216,16 +209,6 @@ abstract class Model extends BaseModel
     {
         $attributes = parent::attributesToArray();
 
-        // Because the original Eloquent never returns objects, we convert
-        // Cassandra related objects to a string representation. This kind
-        // of mimics the SQL behaviour so that dates are formatted
-        // nicely when your models are converted to JSON.
-        foreach ($attributes as $key => &$value) {
-            if ($value instanceof ObjectID) {
-                $value = (string) $value;
-            }
-        }
-
         // Convert dot-notation dates.
         foreach ($this->getDates() as $key) {
             if (str_contains($key, '.') and array_has($attributes, $key)) {
@@ -259,8 +242,8 @@ abstract class Model extends BaseModel
 
         // Date comparison.
         if (in_array($key, $this->getDates())) {
-            $current = $current instanceof UTCDateTime ? $this->asDateTime($current) : $current;
-            $original = $original instanceof UTCDateTime ? $this->asDateTime($original) : $original;
+            $current = $current instanceof Timestamp ? $this->asDateTime($current) : $current;
+            $original = $original instanceof Timestamp ? $this->asDateTime($original) : $original;
 
             return $current == $original;
         }
