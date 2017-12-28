@@ -285,3 +285,25 @@ To delete a model, simply call the delete method on the instance. We can delete 
 We can also perform delete by the column in a table using deleteColumn method:
 
     $emp = DB::table('emp')->where('emp_id', 3)->deleteColumn();
+    
+**Model**
+
+Model 請extends '''use Cubettech\Lacassa\Eloquent\Model;''' 這個Model，然後$connection選擇Cassandra的connection如即可
+例如：config/database.php
+```
+'cassandra' => [
+            'driver' => 'Cassandra',
+            'host' => env('CASSANDRA_HOST', '127.0.0.1'),
+            'port' => env('CASSANDRA_PORT', 9048),
+            'keyspace' => env('CASSANDRA_KEYSPACE', 'quote'),
+            'database' => env('CASSANDRA_KEYSPACE', 'quote')
+        ]
+```
+```
+use Cubettech\Lacassa\Eloquent\Model
+
+class CassandraTable extends Model
+{
+
+    protected $connection = 'cassandra';
+```
