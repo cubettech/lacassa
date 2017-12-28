@@ -1,5 +1,6 @@
 ## **Lacassa**
 
+因原repo cubettech/lacassa 已經沒有在維護故fork此repo繼續開發，可以給自已使用，有需要的人可以自已使用喔
 
 A Query builder with support for Cassandra, using the original Laravel API. This library extends the original Laravel classes, so it uses exactly the same methods.
 
