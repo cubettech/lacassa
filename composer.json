@@ -13,7 +13,11 @@
         "lacassa"
     ],
     "require": {
-        "datastax/php-driver": "^1.2"
+        "datastax/php-driver": "^v1.3.0",
+        "illuminate/support": "^9.0",
+        "illuminate/container": "^9.0",
+        "illuminate/database": "^9.0",
+        "illuminate/events": "^9.0"
     },
     "authors": [
         {

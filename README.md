@@ -1,7 +1,10 @@
 ## **Lacassa**
 
-
 A Query builder with support for Cassandra, using the original Laravel API. This library extends the original Laravel classes, so it uses exactly the same methods.
+
+### UPDATED TO SUPPORT LARAVEL 9
+
+As of 27th December 2022, php-cassandra extension for PHP8 is being maintained here: https://github.com/nano-interactive/ext-cassandra
 
 ## **Table of contents**
 
