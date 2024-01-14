@@ -12,7 +12,6 @@ use Cassandra;
 
 
 
-
 class Builder extends BaseBuilder
 {
     /**
@@ -38,6 +37,7 @@ class Builder extends BaseBuilder
     public $updateCollections;
 
     public $insertCollections;
+    public $connection;
 
     /**
      * The database collection.
@@ -166,8 +166,10 @@ class Builder extends BaseBuilder
     {
         $this->grammar = new Grammar;
         $this->connection = $connection;
-        // $this->processor = $processor;
-        //$this->useCollections = $this->shouldUseCollections();
+        $this->connection->getCassandraConnection()->setConsistency($this->connection->getConsistency());
+
+//         $this->processor = $processor;
+//        $this->useCollections = $this->shouldUseCollections();
     }
 
     /**
@@ -176,7 +178,7 @@ class Builder extends BaseBuilder
      * @param  string $table
      * @return $this
      */
-    public function from($collection)
+    public function from($collection, $as=null)
     {
         return parent::from($collection);
     }
@@ -221,12 +223,10 @@ class Builder extends BaseBuilder
      * @return Cassandra\Rows
      */
     public function executeCql($cql)
-    {   //dd($cql);
-        $statement = new Cassandra\SimpleStatement($cql);
-        $future    = $this->connection->getCassandraConnection()->executeAsync($statement);
-        $result    = $future->get();
-        return $result;
+    {
+        return $this->connection->getCassandraConnection()->querySync($cql);
     }
+
     /**
      * Delete a record from the database.
      *
@@ -338,6 +338,13 @@ class Builder extends BaseBuilder
                     $this->grammar->prepareBindingsForUpdate($this->bindings, $values)
                 )
             );
+        }
+
+        public function compileInsertGetId(Builder $query, $values, $sequence)
+        {
+
+            return $this->insert($values);
+
         }
 
       /**

@@ -1,4 +1,4 @@
-## **Lacassa**
+## **Lara-Cass**
 
 
 A Query builder with support for Cassandra, using the original Laravel API. This library extends the original Laravel classes, so it uses exactly the same methods.
@@ -20,14 +20,10 @@ A Query builder with support for Cassandra, using the original Laravel API. This
 ## **Installation**
 
 Make sure you have the DataStax PHP Driver for Apache Cassandra installed. You can find installation instructions at https://github.com/datastax/php-driver
-or 
-https://github.com/datastax/php-driver/blob/master/ext/README.md
-
-*datastax php-driver requires php version 5.6+*
 
 Installation using composer:
 
-    composer require cubettech/lacassa
+    composer require torecan/lara-cass
 
 And add the service provider in config/app.php:
 
@@ -42,13 +38,55 @@ Change your default database connection name in config/database.php:
 And add a new cassandra connection:
 
     'cassandra' => [
-    	 	'driver' => 'Cassandra',
-    		'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', 7199),
-            'keyspace' => env('DB_DATABASE', 'cassandra_db'),
-        	'username' => env('DB_USERNAME', ''),
-        	'password' => env('DB_PASSWORD', ''),
-     ],
+        'driver' => 'cassandra',
+        'host' => env('DB_HOST', '127.0.0.1'),
+        'port' => env('DB_PORT', 8082),
+        'keyspace' => env('DB_DATABASE', 'cassandra_db'),
+        'username' => env('DB_USERNAME', ''),
+        'password' => env('DB_PASSWORD', ''),
+        'page_size'       => env('DB_PAGE_SIZE', 5000),
+        'consistency'     => Cassandra\Request\Request::CONSISTENCY_LOCAL_ONE,
+        'allow_filtering' => true,
+        'timeout'         => null,
+        'connect_timeout' => 5.0,
+        'request_timeout' => 12.0,
+    ],
+
+#### .env File example
+
+  'driver' => 'cassandra'
+  
+  DB_CONNECTION=cassandra
+
+  DB_HOST=127.0.0.1 
+  
+  DB_PORT=8082
+
+  ### or
+  DB_HOST=172.198.1.1,172.198.1.2,172.198.1.3
+  DB_PORT=8082,8082,7748
+
+  DB_DATABASE=db_name
+  
+  DB_USERNAME=torecan
+  
+  DB_PASSWORD=lara-cassa
+  
+  DB_PAGE_SIZE=500
+
+#### Supported Consistency
+CONSISTENCY_LOCAL_ONE
+CONSISTENCY_QUORUM
+
+    'Supported Consistency' => [
+        'CONSISTENCY_ANY',
+        'CONSISTENCY_ONE',
+        'CONSISTENCY_THREE',
+        'CONSISTENCY_QUORUM',
+        'CONSISTENCY_ALL',
+        'CONSISTENCY_LOCAL_ONE',
+        'CONSISTENCY_EACH_QUORUM',
+    ]
 
 ### **Auth**
 
@@ -67,72 +105,19 @@ You can use Laravel's native Auth functionality for cassandra, make sure your co
 
 ## **Schema**
 
-The database driver also has (limited) schema builder support. You can easily manipulate tables and set indexes:
+! TODO !
 
-        Schema::create(
-            'users', function ($table) {
-                $table->int('id');
-	            $table->text('name');
-	            $table->text('email');
-	            $table->text('password');
-                $table->text('remember_token');
-	            $table->setCollection('phn', 'bigint');
-                $table->listCollection('hobbies', 'text');
-                $table->mapCollection('friends', 'text', 'text');
-                $table->primary(['id']);
-          });
+Currently migration feature is not able for laravel as, 
 
-DROP table
+  > php artisan migrate
+  
+or  
+  > php artisan make:migration createNewTable
 
-        Schema::drop('users');
 
 # **CQL data types supported**
 
-text('a')
-
-bigint('b')
-
-blob('c')
-
-boolean('d')
-
-counter('e')
-
-decimal('f')
-
-double('g')
-
-float('h')
-
-frozen('i')
-
-inet('j')
-
-nt('k')
-
-listCollection('l', 'text')
-
-mapCollection('m', 'timestamp', 'text')
-
-setCollection('n', 'int')
-
-timestamp('o')
-
-timeuuid('p')
-
-tuple('q', 'int', 'text', 'timestamp')
-
-uuid('r')
-
-varchar('s')
-
-varint('t')
-
-ascii('u')
-
-**Primary Key**
-
-primary(['a', 'b'])
+! TODO !
 
 **Query Builder**
 

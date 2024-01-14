@@ -1,5 +1,5 @@
 {
-    "name": "cubettech/lacassa",
+    "name": "torecan/lara-cass",
     "type": "library",
     "description": "Cassandra based query builder for laravel.",
     "license": "MIT",
@@ -10,12 +10,16 @@
         "database",
         "query builder",
         "cql",
-        "lacassa"
+        "lara-cass"
     ],
     "require": {
-        "datastax/php-driver": "^1.2"
+        "mroosz/php-cassandra": "dev-main"
     },
     "authors": [
+        {
+            "name": "Törecan Celik",
+            "email": "torecancelik@gmail.com"
+        },
         {
             "name": "Sijoy Jos",
             "email": "sijoy@cubettech.com"
@@ -31,5 +35,9 @@
             }
         },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.46",
+        "phpstan/phpstan": "^1.10"
+    }
 }

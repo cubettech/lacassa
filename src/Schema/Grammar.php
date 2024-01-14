@@ -32,8 +32,16 @@ class Grammar extends BaseGrammar
     */
    public function compileTableExists()
    {
-       return 'select * from information_schema.tables where table_schema = ? and table_name = ?';
+       return 'select * from system_schema.tables where table_schema = ? and table_name = ?';
    }
+
+
+// Todos
+//    public function compileTables($keyspace)
+//    {
+//        // Query to fetch table names from a specific keyspace in Cassandra
+//        return "select * from system_schema.tables where keyspace_name = '$keyspace' ALLOW FILTERING";
+//    }
 
    /**
     * Compile the query to determine the list of columns.

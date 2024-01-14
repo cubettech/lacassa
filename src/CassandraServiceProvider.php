@@ -3,7 +3,7 @@
 namespace Cubettech\Lacassa;
 
 use Illuminate\Support\ServiceProvider;
-use Cassandra;
+
 
 class CassandraServiceProvider extends ServiceProvider
 {
@@ -14,7 +14,7 @@ class CassandraServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //require __DIR__ . '/../vendor/autoload.php';
+        require __DIR__ . '/../vendor/autoload.php';
     }
 
     /**
@@ -26,8 +26,9 @@ class CassandraServiceProvider extends ServiceProvider
     {
         // Add database driver.
         $this->app->resolving('db', function ($db) {
-            $db->extend('Cassandra', function ($config, $name) {
+            $db->extend('cassandra', function ($config, $name) {
                 $config['name'] = $name;
+                dd("asdasd");
                 return new Connection($config);
             });
         });

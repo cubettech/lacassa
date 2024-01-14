@@ -46,7 +46,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      */
     public function toSql(Connection $connection, BaseGrammar $grammar)
     {
-        $this->addImpliedCommands();
+        $this->addImpliedCommands($connection, $grammar);
 
         $statements = [];
         // Each type of command has a corresponding compiler function on the schema
@@ -220,7 +220,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      * @param  string $column
      * @return \Illuminate\Support\Fluent
      */
-    public function timestamp($column)
+    public function timestamp($column, $precision = 0)
     {
         return $this->addColumn('timestamp', $column);
     }
@@ -256,7 +256,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      * @param  string $column
      * @return \Illuminate\Support\Fluent
      */
-    public function uuid($column)
+    public function uuid($column = 'uuid')
     {
         return $this->addColumn('uuid', $column);
     }
